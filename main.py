@@ -1,7 +1,7 @@
 from lib import functions
 
 #Reading code, extracting lines separately
-read_code = open('codefiles/dictionary.py')
+read_code = open('codefiles/final-1-files.py')
 correct_sol = functions.read_original_code(read_code)
 
 
