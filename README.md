@@ -1,4 +1,4 @@
-CodeShuffler allows instructor to shuffle lines in coding file (written in any coding language), and generate an output image containing shuffled lines of code. It also generate multiple-choice options including the accurate one indicating the correct sequence of coding lines. Instructors can use this tool to carry out paper-based coding assessments with ease without any grading overhead. 
+CodeShuffler empowers instructors to rearrange lines within coding files, regardless of the programming language used, producing an output image that presents the shuffled lines of code. Additionally, it generates multiple-choice options, with one of them signifying the correct sequence of coding lines. This tool simplifies the process of conducting paper-based coding assessments, eliminating the need for manual grading and streamlining the evaluation process for educators.
 
 CodeShuffler, along with all associated coding files, and the assessment template, are copyrighted by Hasan Baig and are made publicly available under the following license terms: 
 
