@@ -1,4 +1,10 @@
+# -------------------------------------------------------------------------------
+# CodeShuffler © 2023 by Hasan Baig is licensed under CC BY-NC-SA 4.0. To view 
+# a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+# ------------------------------------------------------------------------------- 
+
 import random
+from PIL import Image, ImageDraw, ImageFont
 
 def read_original_code(read_code):
     correct_sol = read_code.readlines()
@@ -11,7 +17,7 @@ def read_original_code(read_code):
 def shuffle_sol(correct_sol):
     random_code = random.sample(correct_sol, k=len(correct_sol))
     for el in range(len(random_code)):
-        random_code[el] = f"({el+1}) " + random_code[el]
+        random_code[el] = f"({el+1}) " + random_code[el].strip()        #Remove strip() function to include tabs
         
     return random_code
 
@@ -26,6 +32,19 @@ def gen_correct_answer(correct_sol, shuffled_sol):
                 correct_answer += str(shuffled_sol.index(line_shuf)+1) + ","
     correct_answer = correct_answer[:-1]
     return correct_answer
+
+def convert_to_image(shuffled_sol, file_name):
+    image = Image.new('RGB', (500, 300), color = (255, 255, 255))   
+    d= ImageDraw.Draw(image)
+    fnt = ImageFont.truetype('lib/Source_Code_Pro/static/SourceCodePro-Medium.ttf', 15)
+    
+    y = 0
+    for line in shuffled_sol:
+        d.text((10,y), line.strip(), font = fnt, fill = (0, 0, 0))
+        y += 20
+    
+    file_path = f"shuffledcodeimages/{file_name}.png"
+    image.save(file_path)    
  
 #shuffeling the random choices
 def shuffle_rand_choices(answers_array):

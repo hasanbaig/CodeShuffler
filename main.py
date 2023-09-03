@@ -1,7 +1,13 @@
+# -------------------------------------------------------------------------------
+# CodeShuffler © 2023 by Hasan Baig is licensed under CC BY-NC-SA 4.0. To view 
+# a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+# ------------------------------------------------------------------------------- 
+
 from lib import functions
 
 #Reading code, extracting lines separately
-read_code = open('codefiles/final-1-files.py')
+file_name = 'samplecode.py'
+read_code = open('codefiles/'+file_name)
 correct_sol = functions.read_original_code(read_code)
 
 
@@ -28,4 +34,7 @@ print()
 print("Multiple answers: ", random_choices) 
 print("Correct answer: ", correct_answer)    
 
-
+#generating shuffled code image
+print("******* Generating Shuffled code image ......")
+functions.convert_to_image(shuffled_sol, file_name)
+print("******* Output image stored in the shuffledcodeimage directory!")
