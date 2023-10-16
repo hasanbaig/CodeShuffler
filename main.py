@@ -1,6 +1,8 @@
 #v2
+from lib import settings
 from lib import functions
 import sys
+
 #Reading code, extracting lines separately
 if sys.argv[1]:
     file_name = sys.argv[1]
@@ -9,35 +11,38 @@ else:
     sys.exit(1)
     
 read_code = open('codefiles/'+file_name)
-correct_sol = functions.read_original_code(read_code)
+correct_sol, wrong_inst = functions.read_original_code(read_code)
 
 
-print("##### Correct Solution #####")
-for line in range(len(correct_sol)):
-    print(correct_sol[line])
-print()
-
-#Shuffle the original code lines and tag them with line numbers
-shuffled_sol = functions.shuffle_sol(correct_sol)
+message = "##### Correct Solution #####"
+functions.print_code(correct_sol, message)
 
 
-print("***** Shuffled Solution *****")
-for line in range(len(shuffled_sol)):
-    print(shuffled_sol[line])
-print()
+if settings.include_incorrect_instructions:
+    with_incorrect_insts = functions.incorrect_instructions(correct_sol, wrong_inst)
+    shuffled_sol = functions.shuffle_sol(with_incorrect_insts)
+else:    
+    #Shuffle the original code lines and tag them with line numbers
+    shuffled_sol = functions.shuffle_sol(correct_sol)
+
+message = "***** Shuffled Solution *****"
+functions.print_code(shuffled_sol, message)
 
 #generating the correct answer with the correct order of code lines
-correct_answer = functions.gen_correct_answer(correct_sol, shuffled_sol)
-print(f"Correct Answer: {correct_answer}")
-
+correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_sol)
 
 #generating multiple random choices including the correct answer
-no_of_choices = 4
-random_choices = functions.gen_random_choices(correct_answer, no_of_choices)
+no_of_choices = 5
+
+if settings.include_incorrect_instructions:
+    random_choices = functions.gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines)
+else:
+    random_choices = functions.gen_random_choices(correct_answer, no_of_choices)
 
 print()
 print("Multiple answers: ", random_choices) 
-print("Correct answer: ", correct_answer)    
+print("Correct answer: ", correct_answer)
+print()    
 
 ######## Shuffled Code for Image without indendation
 image_shuffled_sol = []

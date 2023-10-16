@@ -6,3 +6,8 @@ for value in data:
 avg = sum/len(data)
 file.write(str(avg))
 file.close()
+
+#Incorrect lines
+avg = sum/data
+file.write(avg)
+sum += value
