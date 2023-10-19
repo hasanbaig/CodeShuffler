@@ -6,7 +6,7 @@ CodeShuffler, along with all associated coding files, and the assessment templat
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
  
 
-## Instructions
+### Instructions
 1. You need to install Python Pillow library, which you can do simply by executing the following command:
 `pip install pillow`
 
