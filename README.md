@@ -2,8 +2,9 @@ CodeShuffler empowers instructors to rearrange lines within coding files, regard
 
 CodeShuffler, along with all associated coding files, and the assessment template, are copyrighted by Hasan Baig and are made publicly available under the following license terms: 
 
-"Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-
+"CodeShuffler © 2023 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+ 
 
 ## Instructions
 1. You need to install Python Pillow library, which you can do simply by executing the following command:
