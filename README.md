@@ -5,9 +5,10 @@ CodeShuffler, along with all associated coding files, and the assessment templat
 "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 
-#Instructions
+## Instructions
 1. You need to install Python Pillow library, which you can do simply by executing the following command:
 `pip install pillow`
 
-2. To run the program, you need to execute `main.py` file alongwith the input code filename as a commandline argument. For example, to shuffle the code `samplecode.py`, first place it in the directory `codefiles` and then execute the following:
+2. To run the program, you need to execute `main.py` file alongwith the input code filename as a commandline argument. 
+For example, to shuffle the code `samplecode.py`, first place it in the directory `\codefiles\` and then execute the following:
 `python main.py samplecode.py`
