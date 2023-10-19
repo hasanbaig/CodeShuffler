@@ -16,8 +16,8 @@ For example, to shuffle the code, for example `samplecode.py`, first place it in
 
 ### Settings
 
-1. You can optionally add incorrect instructions at the end of the input code after adding the comment line "**#Incorrect lines below**". See `samplecode.py` for help. Then set the switch **include_incorrect_instructions** to `True` in `lib\settings.py` file. 
+1. You can optionally add incorrect instructions at the end of the input code after adding the comment line "**#Incorrect lines below**". See `samplecode.py` for help. Then set the switch `include_incorrect_instructions = True` in `lib\settings.py` file. 
 
-2. You can optionally specify to keep ___ number of lines same in the generated multiple choice questions by setting the value of switch **first_same_X_lines_MCQ** in `lib\settings.py` file. 
+2. You can optionally specify to keep **X** number of lines same in the generated multiple choice questions by setting the value of switch `first_same_X_lines_MCQ` in `lib\settings.py` file. 
 
-3. You can specify how many multiple choice options you want to generate by setting the value of a switch **no_of_choices** in `lib\settings.py` file. 
+3. You can specify how many multiple choice options you want to generate by setting the value of a switch `no_of_choices` in `lib\settings.py` file. 
