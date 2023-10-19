@@ -1,2 +1,2 @@
-include_incorrect_instructions = True
-first_same_X_lines_MCQ = 4
+include_incorrect_instructions = True           #Include incorrect instructions to increase difficulty level
+first_same_X_lines_MCQ = 4                      #Specify upto how many number of lines should be kept same in the generated multiple choice options.
