@@ -60,7 +60,7 @@ def gen_correct_answer(correct_sol, shuffled_sol):
     return correct_answer, remain_lines
 
 def convert_to_image(shuffled_sol, file_name):
-    image = Image.new('RGB', (500, 300), color = (255, 255, 255))   
+    image = Image.new('RGB', (settings.image_x_dim, settings.image_y_dim), color = (255, 255, 255))   
     d= ImageDraw.Draw(image)
     fnt = ImageFont.truetype('lib/Source_Code_Pro/static/SourceCodePro-Medium.ttf', 15)
     
