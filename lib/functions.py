@@ -55,7 +55,7 @@ def gen_correct_answer(correct_sol, shuffled_sol):
     return correct_answer, remain_lines
 
 def convert_to_image(shuffled_sol, file_name):
-    image = Image.new('RGB', (500, 300), color = (255, 255, 255))   
+    image = Image.new('RGB', (settings.image_x_dim, settings.image_y_dim), color = (255, 255, 255))   
     d= ImageDraw.Draw(image)
     fnt = ImageFont.truetype('lib/Source_Code_Pro/static/SourceCodePro-Medium.ttf', 15)
     
@@ -119,10 +119,10 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
         
         # Convert the choices to a string
         choice = ",".join(map(str, choices))
-
+        print(f"# # # # # # choice: {choice}")
         # Calculate similarity between the random sequence and the correct answer
         similarity = sequence_similarity(choice.split(","), correct_answer.split(","))
-
+        print(f"# # # # # # similarity: {similarity}")
         # Check if the generated sequence is close to the correct answer
         if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 1:
             random_choices.append(choice)

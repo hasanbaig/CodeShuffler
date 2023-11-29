@@ -1,6 +1,5 @@
 #v2
-from lib import settings
-from lib import functions
+from lib import settings, functions
 import sys
 
 #Reading code, extracting lines separately
@@ -31,13 +30,11 @@ functions.print_code(shuffled_sol, message)
 #generating the correct answer with the correct order of code lines
 correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_sol)
 
-#generating multiple random choices including the correct answer
-no_of_choices = 5
 
 if settings.include_incorrect_instructions:
-    random_choices = functions.gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines)
+    random_choices = functions.gen_random_choices_wICinst(correct_answer, settings.no_of_choices, remain_lines)
 else:
-    random_choices = functions.gen_random_choices(correct_answer, no_of_choices)
+    random_choices = functions.gen_random_choices(correct_answer, settings.no_of_choices)
 
 print()
 print("Multiple answers: ", random_choices) 
