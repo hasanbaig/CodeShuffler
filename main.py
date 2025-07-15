@@ -1,4 +1,3 @@
-#v2
 from lib import settings, functions
 import sys
 
