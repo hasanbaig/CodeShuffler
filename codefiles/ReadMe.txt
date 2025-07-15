@@ -1,1 +1,0 @@
-In this folder, you will keep your solution file(s) containing the code in correct sequence of lines. This code will be read by CodeShuffler to shuffle the lines of codes, and placed the output image in the directory called "shuffledcodeimages"
