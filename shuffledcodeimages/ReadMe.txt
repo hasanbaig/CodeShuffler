@@ -1,0 +1,1 @@
+This directory contains the image files of shuffled code which can be copy and pasted in the assessment template.
