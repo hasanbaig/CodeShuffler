@@ -35,7 +35,6 @@ def gen_correct_answer(correct_sol, shuffled_sol):
     correct_answer = ""
     all_lines = [ str(i+1) for i in range(len(shuffled_sol))]
     remain_lines = all_lines.copy()
-    
     for line_cor in correct_sol:
         for line_shuf in shuffled_sol:
             # print(f"Instruction: {line_shuf}  , index of ): ", line_shuf.index(")"))
@@ -97,6 +96,7 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
     random_choices = []
     choice_array = correct_answer.split(",")
     total_lines = len(choice_array + remain_lines)
+    
 
     while len(random_choices) < no_of_choices - 1:
         # Select the first three lines from the correct answer
@@ -119,12 +119,13 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
         
         # Convert the choices to a string
         choice = ",".join(map(str, choices))
-        print(f"# # # # # # choice: {choice}")
+        
         # Calculate similarity between the random sequence and the correct answer
         similarity = sequence_similarity(choice.split(","), correct_answer.split(","))
-        print(f"# # # # # # similarity: {similarity}")
+        
         # Check if the generated sequence is close to the correct answer
-        if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 1:
+        # if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 1:
+        if (choice != correct_answer) and (similarity >= len(correct_answer.split(",")) - len(remain_lines)) and (len(choice) == len(correct_answer)):
             random_choices.append(choice)
     
     random_choices.append(correct_answer)

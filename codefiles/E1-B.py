@@ -7,3 +7,7 @@ elif studied < 4:
     print("I should take 1010 seriously.")
 else:
     print("Wrong input")
+
+#Incorrect lines
+studied = input()
+if studied <= 4:
