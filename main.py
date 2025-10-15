@@ -15,7 +15,7 @@ else:
     sys.exit(1)
     
 read_code = open('codefiles/'+file_name)
-correct_sol, wrong_inst = functions.read_original_code(read_code)
+correct_sol, wrong_inst, wrong_inst_dict = functions.read_original_code(read_code)
 
 
 message = "##### Correct Solution #####"

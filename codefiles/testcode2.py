@@ -8,5 +8,7 @@ def two_sum(nums, target):
     return None
 
 #Incorrect lines below
-for i in range(len(nums)): 
-return num_map
+incorrect_lines = {
+    3: "for i in range(len(nums)):", 
+    8: "return num_map"
+}            
