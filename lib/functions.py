@@ -41,8 +41,7 @@ def read_original_code(read_code):
     return correct_sol, incorrect_sol, incorrect_sol_dict
 
 def shuffle_sol(correct_sol):
-    random_code = similarity_preserving_shuffle(correct_sol.copy())
-    
+    random_code = random.sample(correct_sol, k=len(correct_sol))
     #removing the indents for programming blocks
     for el in range(len(random_code)):
         random_code[el] = f"({el+1}) " + random_code[el]#.strip()        #Remove strip() function to include tabs
@@ -146,42 +145,31 @@ def incorrect_instructions(input_code, wrong_inst):
     code_w_incorrect_instrctns = input_code + wrong_inst
     # print_code(code_w_incorrect_instrctns, "##### Code with Incorrect Instructions #####")
     return code_w_incorrect_instrctns
-
-def numerize_code(input_code):
-    #Convert a list of code lines into a dictionary with line numbers as keys
-    num_line_pair = {}
-    for line in range(len(input_code)):
-        num_line_pair[line+1] = input_code[line]
-    return num_line_pair
-
-def swap_lines(num_swaps_limit, numbered_code, incorrect_lines):
-    #given a dictionary of incorrect options and dictionary of the base code, swap corresponding lines within the numbered code
-    code_copy = numbered_code.copy()
-    num_swaps = 0
-    for num, _ in code_copy.items():
-        if num_swaps >= num_swaps_limit:
-            break
-        if num in incorrect_lines:
-            code_copy[num] = incorrect_lines[num]
-            print(f"Swapped line {code_copy[num]} with {incorrect_lines[num]}")
-            num_swaps += 1
-    swapped_code = list(code_copy.values())
-    return swapped_code
-
-def generate_partial_answers(base_code, no_of_choices, incorrect_lines):
-    num_partials = no_of_choices//2
-    partial_options_code = []
-    numerized_code = numerize_code(base_code)
-    for swap in range(1, 0, -1):
-        partial_option = swap_lines(swap, numerized_code, incorrect_lines)
-        partial_options_code.append(partial_option)
-    return partial_options_code
-
-def gen_partial_credit_answer(partial_code_snippet, shuffled_exam_question):
-    partial_answer, _ = gen_correct_answer(partial_code_snippet, shuffled_exam_question)
-    return partial_answer
     
-
+def generate_partials(num_swaps_limit, numbered_code, incorrect_lines, answer_mcq):
+    copied_code = numbered_code.copy()
+    correct_answer_mcq = [int(x) for x in answer_mcq.split(",")]
+    partial_answer_bank = []
+    for line in numbered_code:
+        if num_swaps_limit <= 0:
+            break
+        code = line.split(")", 1)[1].strip() # extract code without line number
+        if code in incorrect_lines:
+            # print(f"Found line to swap: '{code}'")
+            index_to_swap = numbered_code.index(line) # get the index of the line to swap
+            line_to_swap_with = incorrect_lines[code] # get the incorrect line to swap with
+            # print(f"Line to swap with: '{line_to_swap_with}'")
+            if any(line_to_swap_with in line for line in copied_code): # ensure the line to swap with exists in the copied code
+                # print(f"Swapping line '{code}' with '{line_to_swap_with}'")
+                index_of_line_to_swap_with = next(
+                    i for i, line in enumerate(copied_code) if line_to_swap_with in line # find index of line to swap with
+                )
+                to_swap_index = correct_answer_mcq.index(index_to_swap+1)
+                correct_answer_mcq[to_swap_index] = index_of_line_to_swap_with + 1 # update answer key by swapping with incorrect line
+                partial_answer_bank.append(",".join(map(str, correct_answer_mcq)))
+                num_swaps_limit -= 1
+    return partial_answer_bank
+                    
 def print_code(in_code, message = "##### Code #####"):
     print()
     print(message)

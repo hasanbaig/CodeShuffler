@@ -9,6 +9,6 @@ def two_sum(nums, target):
 
 #Incorrect lines below
 incorrect_lines = {
-    3: "for i in range(len(nums)):", 
-    8: "return num_map"
+    "for i, num in enumerate(nums):": "for i in range(len(nums)):", 
+    "return None": "return num_map"
 }            
