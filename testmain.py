@@ -6,8 +6,7 @@
 from lib import settings
 from lib import functions
 import sys
-
-#Reading code, extracting lines separately
+# Reading code, extracting lines separately
 if sys.argv[1]:
     file_name = sys.argv[1]
 else:
@@ -15,35 +14,30 @@ else:
     sys.exit(1)
     
 read_code = open('codefiles/'+file_name)
+
+# Extract correct and incorrect lines from the code file
 correct_sol, wrong_inst, wrong_inst_dict = functions.read_original_code(read_code)
+correct_sol_w_incorrect = functions.incorrect_instructions(correct_sol, wrong_inst)
 
-# message = "##### Correct Solution #####"
-# functions.print_code(correct_sol, message)
-correct_sol_w_incorrect= functions.incorrect_instructions(correct_sol, wrong_inst)
-# shuffled_sol = functions.shuffle_sol(correct_sol)
-# message = "##### Shuffled Question #####"
-# functions.print_code(shuffled_sol, message)
-# correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_sol)
+# Display shuffled question
+shuffled_question = functions.shuffle_sol(correct_sol_w_incorrect)
+functions.print_code(shuffled_question, "##### Shuffled Exam Question #####")
 
-# random_choices = functions.gen_random_choices_wICinst(correct_answer, settings.no_of_choices, remain_lines)
-# partial_options = functions.generate_partial_options(correct_sol, settings.no_of_choices, wrong_inst_dict, remain_lines)
-
-#Shuffling Test
-shuffled_correct = functions.shuffle_sol(correct_sol_w_incorrect)
-correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_correct)
+# Generating correct answer, partial credit options, and random choices
+correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_question)
+partial_option = functions.generate_partials(len(wrong_inst_dict), shuffled_question, wrong_inst_dict, correct_answer)
 random_choices = functions.gen_random_choices_wICinst(correct_answer, settings.no_of_choices, remain_lines)
-functions.print_code(shuffled_correct, "##### Shuffled Exam Question #####")
-partial_options = functions.generate_partial_answers(correct_sol_w_incorrect, settings.no_of_choices, wrong_inst_dict)
-partial_answers = []
-for option in partial_options:
-    shuffled_option = functions.shuffle_sol(option)
-    answer, _ = functions.gen_correct_answer(option, shuffled_option)
-    partial_answers.append(answer)
-    functions.print_code(shuffled_option, "##### Shuffled Partial Option #####")
+
+# Generating shuffled code image without indentation
+image_shuffled_sol = []
+for el in range(len(shuffled_question)):
+    line = shuffled_question[el].split(")", 1)
+    image_shuffled_sol.append(line[0] + ") " + line[-1].strip())
+print("******* Generating Shuffled code image ......")
+functions.convert_to_image(image_shuffled_sol, file_name)
+print(f"Image generated and stored in ~/shuffledcodeimages/ directory as {file_name}.png")
 print()
 print("Correct answer: ", correct_answer)
 print("Multiple answers: ", random_choices) 
-print("Partial credit options: ", partial_answers)
-print()    
-
-
+print("Partial credit options: ", partial_option)
+print()
