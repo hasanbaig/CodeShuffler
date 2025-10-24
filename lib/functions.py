@@ -6,6 +6,7 @@
 from . import settings
 import random
 from PIL import Image, ImageDraw, ImageFont
+import sys
 import ast
 import hashlib
 
@@ -80,19 +81,25 @@ def gen_correct_answer(correct_sol, shuffled_sol):
     return correct_answer, remain_lines
 
 def convert_to_image(shuffled_sol, file_name):
-    image = Image.new('RGB', (settings.image_x_dim, settings.image_y_dim), color = (255, 255, 255))   
-    d= ImageDraw.Draw(image)
+    code_text = "\n".join(line.rstrip() for line in shuffled_sol)
     fnt = ImageFont.truetype('lib/Source_Code_Pro/static/SourceCodePro-Medium.ttf', 15)
-    
-    y = 0
-    for line in shuffled_sol:
-        d.text((10,y), line.strip(), font = fnt, fill = (0, 0, 0))
-        y += 20
-    
+    # temporary surface to measure bounding box
+    dummy_img = Image.new("RGB", (1, 1))
+    draw = ImageDraw.Draw(dummy_img)
+
+    bbox = draw.multiline_textbbox((0, 0), code_text, font=fnt, spacing=4)
+    width = bbox[2] - bbox[0]
+    height = bbox[3] - bbox[1]
+
+    # padding
+    pad_x, pad_y = 20, 20
+    img = Image.new("RGB", (width + 2 * pad_x, height + 2 * pad_y), color=(255, 255, 255))
+    draw = ImageDraw.Draw(img)
+    draw.multiline_text((pad_x, pad_y), code_text, font=fnt, fill=(0, 0, 0), spacing=4)
     file_path = f"shuffledcodeimages/{file_name}.png"
-    image.save(file_path)    
- 
-#shuffeling the random choices
+    img.save(file_path)
+
+#shuffling the random choices
 def shuffle_rand_choices(answers_array):
     random.shuffle(answers_array)
     return answers_array
@@ -124,6 +131,9 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
     total_lines = len(choice_array + remain_lines)
 
     while len(random_choices) < no_of_choices - 1:
+        if settings.first_same_X_lines_MCQ >= len(choice_array):
+            print("Error: first_same_X_lines_MCQ is greater than or equal to total lines available. Please restrict to few lines.")
+            sys.exit(1)
         first_X_lines_MCQ = correct_answer.split(",")[:settings.first_same_X_lines_MCQ]
         remaining_array = correct_answer.split(",")[len(first_X_lines_MCQ):]
         k = random.randint(len(remaining_array) - 1, len(remaining_array) + len(remain_lines) - 1)
@@ -134,9 +144,8 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
         random.shuffle(choices[3:])
         choice = ",".join(map(str, choices))
         similarity = sequence_similarity(choice.split(","), correct_answer.split(","))
-        if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 1:
+        if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 2:
             random_choices.append(choice)
-    
     random_choices.append(correct_answer)
     random_choices = shuffle_rand_choices(random_choices)
     return random_choices        
