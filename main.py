@@ -27,9 +27,9 @@ functions.print_code(shuffled_question, "##### Shuffled Exam Question #####")
 correct_answer, remain_lines = functions.gen_correct_answer(correct_sol, shuffled_question)
 partial_option = functions.generate_partials(len(wrong_inst_dict), shuffled_question, wrong_inst_dict, correct_answer)
 random_choices = functions.gen_random_choices_wICinst(correct_answer, settings.no_of_choices, remain_lines)
-
 # Generating shuffled code image without indentation
 image_shuffled_sol = []
+
 for el in range(len(shuffled_question)):
     line = shuffled_question[el].split(")", 1)
     image_shuffled_sol.append(line[0] + ") " + line[-1].strip())
