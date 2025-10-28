@@ -8,8 +8,8 @@ elif studied < 4:
 else:
     print("Wrong input")
 
-#Incorrect lines
+# Incorrect lines
 incorrect_lines = {
     "studied = int(input())": "studied = input()",
-    "elif studied < 4:": "if studied <= 4:"
+    "elif studied < 4:": "if studied <= 4:",
 }

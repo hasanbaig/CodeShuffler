@@ -16,9 +16,10 @@ def merge_sorted(l1, l2):
         j += 1
     return result
 
-#Incorrect lines below
+
+# Incorrect lines below
 incorrect_lines = {
     "if l1[i] < l2[j]:": "if l1[i] > l2[j]:",
     "while i < len(l1):": "for i in range(len(l1)):",
-    "return result": "return []"
+    "return result": "return []",
 }

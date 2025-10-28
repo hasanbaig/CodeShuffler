@@ -7,8 +7,9 @@ def two_sum(nums, target):
         num_map[num] = i
     return None
 
-#Incorrect lines below
+
+# Incorrect lines below
 incorrect_lines = {
-    "for i, num in enumerate(nums):": "for i in range(len(nums)):", 
-    "return None": "return num_map"
-}            
+    "for i, num in enumerate(nums):": "for i in range(len(nums)):",
+    "return None": "return num_map",
+}
