@@ -1,1 +1,15 @@
+cfgv==3.4.0
+distlib==0.4.0
+filelock==3.20.0
+identify==2.6.15
+mypy==1.18.2
+mypy_extensions==1.1.0
+nodeenv==1.9.1
+pathspec==0.12.1
 pillow==11.3.0
+platformdirs==4.5.0
+pre_commit==4.3.0
+PyYAML==6.0.3
+ruff==0.14.2
+typing_extensions==4.15.0
+virtualenv==20.35.3

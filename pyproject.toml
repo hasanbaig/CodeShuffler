@@ -12,7 +12,7 @@ select = ["E", "F", "W", "C90"]  # errors, pyflakes, pycodestyle, complexity-ish
 ignore = ["E501"]                # handled by black
 line-length = 100
 target-version = "py310"
-exclude = ["build", "dist", ".venv", "__pycache__"]
+exclude = ["build", "dist", ".venv", "__pycache__","codeshuffler/codefiles"]
 
 [tool.mypy]
 python_version = "3.10"

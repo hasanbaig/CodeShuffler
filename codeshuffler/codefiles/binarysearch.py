@@ -10,9 +10,10 @@ def binary_search(nums, target):
             right = mid - 1
     return -1
 
-#Incorrect lines below
+
+# Incorrect lines below
 incorrect_lines = {
     "while left <= right:": "while left < right:",
     "elif nums[mid] < target:": "if nums[mid] > target:",
-    "return -1": "return None"
+    "return -1": "return None",
 }
