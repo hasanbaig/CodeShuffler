@@ -22,7 +22,7 @@ else:
     print("Enter the code's filename you want to shuffle.")
     sys.exit(1)
 
-read_code = open("codefiles/" + file_name)
+read_code = open("codeshuffler/codefiles/" + file_name)
 
 # Extract correct and incorrect lines from the code file
 correct_sol, wrong_inst, wrong_inst_dict = read_original_code(read_code)
