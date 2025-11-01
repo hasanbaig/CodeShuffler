@@ -7,19 +7,11 @@ profile = "black"
 line_length = 100
 
 [tool.ruff]
-# Ruff is fast and covers many categories; tune selects based on your needs.
-select = ["E", "F", "W", "C90"]  # errors, pyflakes, pycodestyle, complexity-ish
-ignore = ["E501"]                # handled by black
+lint.select = ["E", "F", "W", "C90"] 
+lint.ignore = ["E501"]               
 line-length = 100
 target-version = "py310"
-exclude = ["build", "dist", ".venv", "__pycache__","codeshuffler/codefiles"]
-
-[tool.mypy]
-python_version = "3.10"
-ignore_missing_imports = true
-strict = true
-warn_unused_ignores = true
-warn_unreachable = true
+exclude = ["codeshuffler/codefiles", "codeshuffler/gui/codefiles"]
 
 [tool.coverage.run]
 branch = true

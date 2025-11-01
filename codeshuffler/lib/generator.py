@@ -20,7 +20,7 @@ def read_original_code(read_code):
     incorrect_sol_dict = {}
 
     for idx, line in enumerate(correct_sol):
-        if "incorrect_lines" in line:
+        if "incorrect_lines" in line.lower():
             # Include preceding comment if exists
             if idx > 0 and correct_sol[idx - 1].strip().startswith("#"):
                 idx -= 1
@@ -106,7 +106,8 @@ def gen_random_choices_wICinst(correct_answer, no_of_choices, remain_lines):
         choice = ",".join(map(str, choices))
         similarity = sequence_similarity(choice.split(","), correct_answer.split(","))
         if choice != correct_answer and similarity >= len(correct_answer.split(",")) - 2:
-            random_choices.append(choice)
+            if choice not in random_choices:
+                random_choices.append(choice)
     random_choices.append(correct_answer)
     random_choices = shuffle_rand_choices(random_choices)
     return random_choices
