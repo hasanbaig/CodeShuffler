@@ -8,7 +8,7 @@ line_length = 100
 
 [tool.ruff]
 lint.select = ["E", "F", "W", "C90"] 
-lint.ignore = ["E501"]               
+lint.ignore = ["E501", "E902"]               
 line-length = 100
 target-version = "py310"
 exclude = ["codeshuffler/codefiles", "codeshuffler/gui/codefiles"]

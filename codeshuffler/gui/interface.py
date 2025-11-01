@@ -137,7 +137,10 @@ class CodeShufflerGUI(QWidget):
         letters = ["a", "b", "c", "d", "e", "f", "g"]
 
         for i, choice in enumerate(random_choices):
-            label = f"{letters[i]}) {choice}"
+            if choice == correct_answer:
+                label = f"{letters[i]}) {choice}  <-- Correct Answer"
+            else:
+                label = f"{letters[i]}) {choice}"
             self.answer_choices.addItem(label)
         if partial_option:
             self.answer_choices.addItem("")
