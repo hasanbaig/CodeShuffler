@@ -30,6 +30,7 @@ def read_original_code(read_code):
             dict_part = dict_str.split("=", 1)[1].strip()
             incorrect_sol_dict = ast.literal_eval(dict_part)
             incorrect_sol = list(incorrect_sol_dict.values())
+            # todo: add functionality checking if dict length is longer than available items to swap
             break
     return correct_sol, incorrect_sol, incorrect_sol_dict
 
