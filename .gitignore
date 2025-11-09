@@ -1,3 +1,6 @@
 .DS_Store
-test/
+tests/
 lib/__pycache__/*
+codeshuffler/codefiles
+codeshuffer/images/
+codeshuffler/gui/milestone-checklist.md
