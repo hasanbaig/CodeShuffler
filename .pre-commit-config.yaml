@@ -15,8 +15,7 @@ repos:
     rev: v0.6.0
     hooks:
       - id: ruff
-        args: ["check", "--fix"]  # remove --fix if you want check-only
-
+        args: ["check", "--fix"] 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
