@@ -5,3 +5,4 @@ codeshuffler/codefiles
 codeshuffer/images/
 codeshuffler/gui/milestone-checklist.md
 pyproject.toml
+.pre-commit-config.yaml
