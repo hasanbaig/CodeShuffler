@@ -1,0 +1,5 @@
+- **Backlog**
+    - Save previous session when closing and re-opening
+    - Save settings across sessions (opt for a config rather than settings.py)
+    - Improved error handling and robustness
+    - Menu Bar Branding & Packaging
