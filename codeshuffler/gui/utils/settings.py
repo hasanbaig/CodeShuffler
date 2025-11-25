@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
-from codeshuffler.lib import settings
+from codeshuffler.settings import settings
 
 
 class SettingsDialog(QDialog):

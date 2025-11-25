@@ -40,7 +40,7 @@ def convert_to_image(shuffled_sol, file_name):
     img = Image.new("RGB", (width + 2 * pad_x, height + 2 * pad_y), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
     draw.multiline_text((pad_x, pad_y), code_text, font=fnt, fill=(0, 0, 0), spacing=4)
-    file_path = f"codeshuffler/images/{file_name}.png"
+    file_path = f"codeshuffler/gui/outputs/{file_name}.png"
     img.save(file_path)
 
 
