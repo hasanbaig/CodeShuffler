@@ -5,9 +5,9 @@
 
 import ast
 import random
-from typing import Counter
+from collections import Counter
 
-from . import settings
+from ..settings import settings
 from .utils import sequence_similarity
 
 
@@ -15,7 +15,8 @@ def read_original_code(read_code):
     original_code = read_code.readlines()
     code_wo_empty_lines = [line for line in original_code if line.strip() != ""]
     correct_sol = [line.rstrip("\n") for line in code_wo_empty_lines]
-
+    duplicate_keys = []
+    warning_msg = None
     incorrect_sol = []
     incorrect_sol_dict = {}
 
@@ -50,12 +51,7 @@ def read_original_code(read_code):
             except Exception as e:
                 warning_msg = f"Failed to parse `incorrect_lines`: {e}"
             break
-    warning_msg = None
-    if duplicate_keys:
-        warning_msg = (
-            f"Duplicate keys detected in 'incorrect_lines': {duplicate_keys}. "
-            "Later entries will overwrite earlier ones."
-        )
+
     return correct_sol, incorrect_sol, incorrect_sol_dict, warning_msg
 
 
@@ -147,14 +143,11 @@ def generate_partials(num_swaps_limit, numbered_code, incorrect_lines, answer_mc
             break
         code = line.split(")", 1)[1].strip()  # extract code without line number
         if code in incorrect_lines:
-            # print(f"Found line to swap: '{code}'")
             index_to_swap = numbered_code.index(line)  # get the index of the line to swap
             line_to_swap_with = incorrect_lines[code]  # get the incorrect line to swap with
-            # print(f"Line to swap with: '{line_to_swap_with}'")
             if any(
                 line_to_swap_with in line for line in copied_code
             ):  # ensure the line to swap with exists in the copied code
-                # print(f"Swapping line '{code}' with '{line_to_swap_with}'")
                 index_of_line_to_swap_with = next(
                     i
                     for i, line in enumerate(copied_code)

@@ -14,24 +14,26 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
+    QTabWidget,
     QTextEdit,
     QVBoxLayout,
     QWidget,
 )
 
-from codeshuffler.gui.settings import SettingsDialog
-from codeshuffler.gui.syntax import GenericHighlighter
-from codeshuffler.lib import settings
+from codeshuffler.gui.utils.settings import SettingsDialog
+from codeshuffler.gui.utils.syntax import GenericHighlighter
 from codeshuffler.lib.generator import (
     gen_correct_answer,
     gen_random_choices_wICinst,
     generate_partials,
     incorrect_instructions,
 )
-from codeshuffler.lib.models.codefile import CodeFile
+from codeshuffler.lib.parser import create_exam_docx, parse_exam, shuffle_answers, shuffle_questions
 from codeshuffler.lib.utils import download_image, shuffle_sol
+from codeshuffler.models.codefile import CodeFile
+from codeshuffler.settings import settings
 
-BASE_PATH = os.path.join(os.getcwd(), "codeshuffler", "gui", "codefiles")
+BASE_PATH = os.path.join(os.getcwd(), "codeshuffler", "gui", "cache")
 os.makedirs(BASE_PATH, exist_ok=True)
 
 
@@ -96,11 +98,17 @@ class CodeShufflerGUI(QMainWindow):
         file_menu.addSeparator()
         file_menu.addAction(quit_action)
 
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        self.setAcceptDrops(True)
+        self.tabs = QTabWidget()
+        self.setCentralWidget(self.tabs)
 
-        main_layout = QVBoxLayout(central_widget)
+        # TAB 1: CodeShuffler
+        self.code_tab = QWidget()
+        self.tabs.addTab(self.code_tab, "CodeShuffler")
+        code_tab_layout = QVBoxLayout(self.code_tab)
+
+        self.exam_tab = QWidget()
+        self.tabs.addTab(self.exam_tab, "Exam Shuffler")
+        self.init_exam_tab()
 
         top_bar = QHBoxLayout()
         logo_label = QLabel()
@@ -176,12 +184,120 @@ class CodeShufflerGUI(QMainWindow):
         content_layout.addLayout(left_layout, 1)
         content_layout.addLayout(right_layout, 1)
 
-        main_layout.addLayout(top_bar)
-        main_layout.addLayout(content_layout)
+        code_tab_layout.addLayout(top_bar)
+        code_tab_layout.addLayout(content_layout)
 
         self.current_file = None
         self.filename = None
         self.shuffled_question = None
+        self.template = "codeshuffler/codefiles/templates/CodeShufflersTemplate.docx"
+
+    def init_exam_tab(self):
+        layout = QVBoxLayout(self.exam_tab)
+
+        title = QLabel("Exam Shuffler")
+        title.setStyleSheet("font-size: 16px; font-weight: bold;")
+        layout.addWidget(title)
+
+        self.exam_drop_area = QPlainTextEdit()
+        self.exam_drop_area.setReadOnly(True)
+        self.exam_drop_area.setPlaceholderText("Drop a .docx exam file here...")
+        self.exam_drop_area.setStyleSheet(
+            """
+            QPlainTextEdit {
+                border: 2px dashed #888;
+                border-radius: 8px;
+                background-color: #1e1e1e;
+                color: #dcdcdc;
+                padding: 10px;
+                font-family: 'Source Code Pro';
+            }
+        """
+        )
+
+        layout.addWidget(self.exam_drop_area)
+        self.exam_tab.setAcceptDrops(True)
+        self.exam_tab.dragEnterEvent = self.exam_drag_enter
+        self.exam_tab.dropEvent = self.exam_drop_event
+
+        button_row = QHBoxLayout()
+
+        self.btn_shuffle_q = QPushButton("Shuffle Questions")
+        self.btn_shuffle_q.clicked.connect(self.exam_shuffle_questions)
+
+        self.btn_shuffle_a = QPushButton("Shuffle Answers")
+        self.btn_shuffle_a.clicked.connect(self.exam_shuffle_answers)
+
+        self.btn_shuffle_both = QPushButton("Shuffle Both")
+        self.btn_shuffle_both.clicked.connect(self.exam_shuffle_both)
+
+        button_row.addWidget(self.btn_shuffle_q)
+        button_row.addWidget(self.btn_shuffle_a)
+        button_row.addWidget(self.btn_shuffle_both)
+
+        layout.addLayout(button_row)
+
+        self.save_exam_btn = QPushButton("Save Shuffled Exam")
+        self.save_exam_btn.clicked.connect(self.save_exam_doc)
+        layout.addWidget(self.save_exam_btn)
+
+        self.exam_dict = None
+        self.exam_file_path = None
+
+    def exam_drag_enter(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def exam_drop_event(self, event):
+        for url in event.mimeData().urls():
+            file_path = url.toLocalFile()
+            if file_path.lower().endswith(".docx"):
+                self.exam_file_path = file_path
+                self.exam_dict = parse_exam(file_path)
+                self.exam_drop_area.setPlainText(
+                    f"Loaded exam: {file_path}\n\nFound {len(self.exam_dict)} questions."
+                )
+            else:
+                QMessageBox.warning(self, "Invalid File", "Please upload a .docx exam.")
+
+    def exam_shuffle_questions(self):
+        if not self.exam_dict:
+            QMessageBox.warning(self, "No Exam", "Upload an exam first.")
+            return
+        self.exam_dict = shuffle_questions(self.exam_dict)
+        self.exam_drop_area.appendPlainText("\nQuestions shuffled.")
+
+    def exam_shuffle_answers(self):
+        if not self.exam_dict:
+            QMessageBox.warning(self, "No Exam", "Upload an exam first.")
+            return
+        self.exam_dict = shuffle_answers(self.exam_dict)
+        self.exam_drop_area.appendPlainText("\nAnswers shuffled.")
+
+    def exam_shuffle_both(self):
+        if not self.exam_dict:
+            QMessageBox.warning(self, "No Exam", "Upload an exam first.")
+            return
+        self.exam_dict = shuffle_answers(shuffle_questions(self.exam_dict))
+        self.exam_drop_area.appendPlainText("\nQuestions + Answers shuffled.")
+
+    def save_exam_doc(self):
+        if not self.exam_dict:
+            QMessageBox.warning(self, "No Exam", "No shuffled exam to save.")
+            return
+
+        save_path, _ = QFileDialog.getSaveFileName(
+            self, "Save Shuffled Exam", "shuffled_exam.docx", "Word Documents (*.docx)"
+        )
+
+        if not save_path:
+            return
+
+        try:
+            create_exam_docx(self.template, self.exam_dict, save_path)
+            QMessageBox.information(self, "Saved", f"Shuffled exam saved to:\n{save_path}")
+        except Exception as e:
+            QMessageBox.critical(self, "Error Saving", str(e))
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -323,15 +439,15 @@ class CodeShufflerGUI(QMainWindow):
 
         for choice in random_choices:
             if choice == correct_answer:
-                color = QColor("#4CAF50")  # green
+                color = QColor("#4CAF50")
                 score = 1.0
             elif choice in partial_options:
-                color = QColor("#FFA500")  # orange
+                color = QColor("#FFA500")
                 swap_index = partial_options.index(choice)
                 swaps = swap_index + 1
                 score = max(0, 1 - 0.25 * swaps)
             else:
-                color = QColor("#000000")  # black
+                color = QColor("#000000")
                 score = 0.0
             scored_options.append((choice, color, score))
         scored_options.sort(key=lambda x: x[2], reverse=True)
@@ -369,14 +485,14 @@ class CodeShufflerGUI(QMainWindow):
         dialog.exec_()
 
     def clear_image_cache(self):
-
-        if not os.path.exists(BASE_PATH):
+        cache_folder = os.path.join(BASE_PATH, "inputs")
+        if not os.path.exists(cache_folder):
             QMessageBox.information(self, "Clear Cache", "No image cache found.")
             return
 
         deleted = 0
-        for filename in os.listdir(BASE_PATH):
-            file_path = os.path.join(BASE_PATH, filename)
+        for filename in os.listdir(cache_folder):
+            file_path = os.path.join(cache_folder, filename)
             try:
                 if os.path.isfile(file_path):
                     os.remove(file_path)
