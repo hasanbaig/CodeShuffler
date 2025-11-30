@@ -13,6 +13,8 @@
 
     - Save previous session when closing and re-opening
     - Save settings across sessions (opt for a config rather than settings.py)
-    
+
+    - UI Improvements
+
     - Menu Bar Branding & Packaging
     - Application Packaging, Executable Wrapping
