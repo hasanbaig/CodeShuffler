@@ -8,8 +8,8 @@
         - ~~Finalize template & exam outputs~~
         - Two-block exam format
 
-    - Output 2 Exams, one w/ answer key, one without
-        - The user will input a template where correct MCQs will be highlighted, parser outputs two exam versions
+    - ~~Output 2 Exams, one w/ answer key, one without~~
+        - ~~The user will input a template where correct MCQs will be highlighted, parser outputs two exam versions~~
 
     - Save previous session when closing and re-opening
     - Save settings across sessions (opt for a config rather than settings.py)

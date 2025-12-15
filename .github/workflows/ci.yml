@@ -38,14 +38,14 @@ jobs:
           pip install ruff
           pip install pytest pytest-cov
 
-      - name: Run Black (format check)
-        run: black --check .
+      - name: Run Black
+        run: python -m black --check .
 
-      - name: Run isort (import sort check)
-        run: isort --check-only .
+      - name: Run isort
+        run: python -m isort --check-only .
 
-      - name: Run Ruff (lint)
-        run: ruff check .
+      - name: Run Ruff
+        run: python -m ruff check .
         
       # - name: Run tests (pytest + coverage)
       #   run: pytest --cov=my_app --cov-report=xml --cov-report=term-missing --cov-fail-under=80
