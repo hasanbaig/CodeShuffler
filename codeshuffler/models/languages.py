@@ -9,6 +9,5 @@ EXTENSION_LANGUAGE_MAP = {
     ".ts": "javascript",
 }
 
-
 def language_from_extension(ext: str) -> str:
     return EXTENSION_LANGUAGE_MAP.get(ext.lower(), "python")
