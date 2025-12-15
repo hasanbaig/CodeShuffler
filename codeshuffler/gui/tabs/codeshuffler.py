@@ -117,10 +117,14 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         self.filename = filename
         cache_path = os.path.join(BASE_PATH, "inputs")
         save_path = os.path.join(cache_path, filename)
-
-        with open(file_path, "rb") as src, open(save_path, "wb") as dst:
-            dst.write(src.read())
-
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        try:
+            with open(file_path, "rb") as src, open(save_path, "wb") as dst:
+                dst.write(src.read())
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f": {e}")
+            self.current_file = None
+            return
         self.current_file = CodeFile(save_path)
 
         try:
