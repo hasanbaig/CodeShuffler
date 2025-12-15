@@ -11,8 +11,11 @@ lint.select = ["E", "F", "W", "C90"]
 lint.ignore = ["E501", "E902"]               
 line-length = 100
 target-version = "py310"
-exclude = ["codeshuffler/codefiles", "codeshuffler/gui/codefiles"]
+exclude = ["codeshuffler/codefiles/snippets", "codeshuffler/gui/cache/inputs"]
 
 [tool.coverage.run]
 branch = true
 source = ["my_app"]
+
+[tool.ruff.mccabe]
+max-complexity = 25

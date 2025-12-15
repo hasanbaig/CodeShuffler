@@ -1,3 +1,6 @@
 .DS_Store
-test/
+tests/
 lib/__pycache__/*
+codeshuffer/images/
+pyproject.toml
+.pre-commit-config.yaml
