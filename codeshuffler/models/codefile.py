@@ -1,5 +1,7 @@
 import os
+
 from codeshuffler.lib.generator import read_original_code
+
 
 class CodeFile:
     def __init__(self, path: str):
