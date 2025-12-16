@@ -28,13 +28,12 @@ MENU_BAR_STYLE = """
     """
 DARK_TEXTEDIT_BASE = """
 QPlainTextEdit, QTextEdit {
-    border: 2px solid #aaa;
-    border-radius: 8px;
+    border: none;
     background-color: #1e1e1e;
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
     font-size: 13px;
-    padding: 10px;
+    padding: 0px;
 }
 """
 
@@ -46,7 +45,6 @@ QPlainTextEdit, QTextEdit {
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
     font-size: 13px;
-    padding: 10px;
 }
 """
 
@@ -58,9 +56,30 @@ QPlainTextEdit, QTextEdit {
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
     font-size: 13px;
-    padding: 10px;
 }
 """
+LIGHT_TEXTEDIT = """
+QTextEdit {
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+    font-size: 13px;
+}
+"""
+ANSWER_LIST_STYLE = """
+        QTreeWidget {
+            border: none;
+            background-color: #ffffff;
+            font-family: Tahoma;
+            font-size: 11px;
+        }
+
+        QHeaderView::section {
+            border-bottom: 1px solid #bdbdbd;
+            font-weight: 600;
+        }
+        """
 
 DARK_DROP_AREA = """
 QPlainTextEdit {
@@ -72,3 +91,26 @@ QPlainTextEdit {
     font-family: 'Source Code Pro';
 }
 """
+TAB_STYLE = """
+            QTabBar::tab {
+                font-size: 10px;
+            }
+            QTabBar::tab:selected {
+            }
+        """
+HEADER_STYLE = """
+            QLabel {
+                background-color: #f0f0f0;
+                color: #000000;
+                padding: 6px 10px;
+                font-weight: 600;
+                border: 1px solid #bdbdbd;
+                border-bottom: none;
+            }
+        """
+BODY_STYLE = """
+                QWidget {
+                    background-color: #ffffff;
+                    border: 1px solid #bdbdbd;
+                }
+            """

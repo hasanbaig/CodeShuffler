@@ -6,17 +6,6 @@ from codeshuffler.gui.utils.styles import MENU_BAR_STYLE
 
 
 def build_menu(main_window):
-    """
-    Builds the full application menu bar and attaches actions to the
-    provided main_window instance.
-
-    main_window MUST implement:
-        - open_settings()
-        - clear_image_cache()
-        - quit_codeshuffler()
-
-    Returns the constructed QMenuBar.
-    """
     menu_bar = main_window.menuBar()
     menu_bar.setStyleSheet(MENU_BAR_STYLE)
 

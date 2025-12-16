@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import (
     QFileDialog,
     QHBoxLayout,
-    QLabel,
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
@@ -30,11 +29,6 @@ class ExamShufflerTab(QWidget, FileDropHandler):
 
     def init_ui(self):
         layout = QVBoxLayout(self)
-
-        title = QLabel("Exam Shuffler")
-        title.setStyleSheet("font-size: 16px; font-weight: bold;")
-        layout.addWidget(title)
-
         self.exam_drop_area = QPlainTextEdit()
         self.exam_drop_area.setReadOnly(True)
         self.exam_drop_area.setPlaceholderText("Drop a .docx exam file here...")
