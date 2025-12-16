@@ -5,7 +5,6 @@ class HtmlPreviewWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # Constrain this widget itself
         self.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Expanding,
@@ -18,7 +17,6 @@ class HtmlPreviewWidget(QWidget):
         root_layout.setContentsMargins(0, 0, 0, 0)
         root_layout.setSpacing(0)
 
-        # Neutral container (protects layouts from WebEngine)
         container = QWidget(self)
         container.setSizePolicy(
             QSizePolicy.Expanding,
@@ -30,11 +28,9 @@ class HtmlPreviewWidget(QWidget):
         container_layout.setSpacing(0)
 
         try:
-            from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore
+            from PyQt5.QtWebEngineWidgets import QWebEngineView
 
             web = QWebEngineView(container)
-
-            # ONLY touch it after successful creation
             web.setSizePolicy(
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding,
@@ -56,10 +52,6 @@ class HtmlPreviewWidget(QWidget):
 
         root_layout.addWidget(container)
         self.setLayout(root_layout)
-
-    # -------------------------
-    # Public API
-    # -------------------------
 
     def set_message(self, msg: str):
         html = f"""
