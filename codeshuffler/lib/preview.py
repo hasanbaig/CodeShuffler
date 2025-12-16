@@ -213,7 +213,7 @@ def _render_paragraphs(text: str) -> str:
         if not p:
             continue
         joined = "\n".join(p)
-        html_paras.append(f"<p>{escape(joined).replace('\\n', '<br/>')}</p>")
+        html_paras.append("<p>{}</p>".format(escape(joined).replace("\n", "<br/>")))
     return "".join(html_paras)
 
 

@@ -115,7 +115,7 @@ class ExamShufflerTab(QWidget, FileDropHandler):
 
         download_icon = QLabel()
         download_icon.setPixmap(QIcon(os.path.join(ICON_PATH, "download.png")).pixmap(16, 16))
-        download_text = QLabel("Download PDF")
+        download_text = QLabel("Download Exam")
 
         download_layout.addStretch()
         download_layout.addWidget(download_icon)
