@@ -17,5 +17,5 @@ exclude = ["codeshuffler/codefiles/snippets", "codeshuffler/gui/cache/inputs"]
 branch = true
 source = ["my_app"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 25

@@ -3,11 +3,12 @@ import sys
 
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTabWidget
 
+from codeshuffler.gui.components.settings import SettingsDialog
 from codeshuffler.gui.tabs.codeshuffler import CodeShufflerTab
 from codeshuffler.gui.tabs.examshuffler import ExamShufflerTab
 from codeshuffler.gui.tabs.menu import build_menu
 from codeshuffler.gui.utils.dragdrop import FileDropHandler
-from codeshuffler.gui.utils.settings import SettingsDialog
+from codeshuffler.gui.utils.styles import TAB_STYLE
 
 
 class MainWindow(QMainWindow):
@@ -19,6 +20,7 @@ class MainWindow(QMainWindow):
         build_menu(self)
 
         self.tabs = QTabWidget()
+        self.tabs.setStyleSheet(TAB_STYLE)
         self.setCentralWidget(self.tabs)
 
         # Code Shuffler
