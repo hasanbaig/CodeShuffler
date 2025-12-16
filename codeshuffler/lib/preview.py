@@ -20,31 +20,16 @@ def render_exam_html(
     title: str = "Exam Preview",
     subtitle: Optional[str] = None,
 ) -> HtmlPreview:
-    """
-    Convert the parsed/shuffled exam structure into an HTML preview.
-
-    This is intentionally tolerant of different exam_dict shapes since parse_exam()
-    may evolve. We attempt to render something sensible for:
-      - {qnum: list[str]} (choices only)
-      - {qnum: {"prompt": str, "choices": list[str], ...}}
-      - {qnum: tuple/list containing prompt + choices}
-      - Any other value -> stringified
-
-    The goal of preview is clarity for instructors (order, choices, code blocks),
-    not perfect Word fidelity.
-    """
     if not exam_dict:
         raise PreviewError("No exam content to preview.")
 
-    # Sort questions if possible
     items = list(exam_dict.items())
     try:
         items.sort(key=lambda kv: int(kv[0]))
     except Exception:
-        # Fall back to insertion order
         pass
 
-    css = _default_css()
+    css = default_css()
 
     header_bits = [f"<h1>{escape(title)}</h1>"]
     if subtitle:
@@ -59,7 +44,7 @@ def render_exam_html(
     body.append("<div class='questions'>")
 
     for idx, (qnum, qval) in enumerate(items, start=1):
-        prompt, choices, meta = _coerce_question(qnum, qval, idx=idx)
+        prompt, choices, meta = coerce_question(qnum, qval, idx=idx)
 
         body.append("<section class='question'>")
         body.append(
@@ -68,18 +53,13 @@ def render_exam_html(
         )
 
         if prompt:
-            body.append(f"<div class='prompt'>{_render_rich_text(prompt)}</div>")
+            body.append(f"<div class='prompt'>{render_rich_text(prompt)}</div>")
 
         if choices:
             body.append("<ol class='choices'>")
             for c in choices:
-                body.append(f"<li class='choice'>{_render_rich_text(c)}</li>")
+                body.append(f"<li class='choice'>{render_rich_text(c)}</li>")
             body.append("</ol>")
-
-        # Optional meta display if ever useful (kept off by default)
-        # if meta:
-        #     body.append(f"<pre class='meta'>{escape(str(meta))}</pre>")
-
         body.append("</section>")
 
     body.append("</div>")  # questions
@@ -101,16 +81,9 @@ def render_exam_html(
     return HtmlPreview(html=html)
 
 
-def _coerce_question(qnum: Any, qval: Any, *, idx: int) -> Tuple[str, List[str], Dict[str, Any]]:
-    """
-    Normalize many potential question shapes into:
-      prompt: str
-      choices: list[str]
-      meta: dict[str, Any]
-    """
+def coerce_question(qnum: Any, qval: Any, *, idx: int) -> Tuple[str, List[str], Dict[str, Any]]:
     meta: Dict[str, Any] = {}
 
-    # Shape A: {qnum: {"prompt":..., "choices":[...], ...}}
     if isinstance(qval, dict):
         prompt = ""
         for k in ("prompt", "question", "stem", "text"):
@@ -126,7 +99,6 @@ def _coerce_question(qnum: Any, qval: Any, *, idx: int) -> Tuple[str, List[str],
 
         choices = [str(x) for x in choices_val] if choices_val else []
 
-        # Keep the rest as meta (optional)
         for k, v in qval.items():
             if k not in (
                 "prompt",
@@ -145,60 +117,42 @@ def _coerce_question(qnum: Any, qval: Any, *, idx: int) -> Tuple[str, List[str],
 
         return prompt, choices, meta
 
-    # Shape B: {qnum: list[str]} (choices only)
     if isinstance(qval, (list, tuple)):
-        # If it looks like (prompt, choices)
         if len(qval) == 2 and isinstance(qval[0], str) and isinstance(qval[1], (list, tuple)):
             prompt = qval[0]
             choices = [str(x) for x in qval[1]]
             return prompt, choices, meta
-
-        # Otherwise assume it's a list of choices
         choices = [str(x) for x in qval]
         prompt = f"Question {idx}"
         return prompt, choices, meta
 
-    # Shape C: single string
     if isinstance(qval, str):
         return qval, [], meta
-
-    # Fallback
     return str(qval), [], meta
 
 
-def _render_rich_text(text: str) -> str:
-    """
-    Very lightweight "rich" rendering:
-    - Escapes HTML
-    - Detects fenced code blocks ```...``` and renders as <pre><code>...</code></pre>
-    - Preserves line breaks
-    """
+def render_rich_text(text: str) -> str:
     s = text.strip()
     if "```" not in s:
-        return _render_paragraphs(s)
+        return render_paragraphs(s)
 
     parts = s.split("```")
     out: List[str] = []
     for i, part in enumerate(parts):
         if i % 2 == 0:
-            # normal text
             if part.strip():
-                out.append(_render_paragraphs(part))
+                out.append(render_paragraphs(part))
         else:
-            # code block (optionally with language as first line)
             code = part
             code_lines = code.splitlines()
             if code_lines and len(code_lines[0].strip()) <= 20 and " " not in code_lines[0].strip():
-                # could be "python" or "cpp" etc
-                # we ignore language but strip it from displayed code
                 code_lines = code_lines[1:]
             code_clean = "\n".join(code_lines).rstrip("\n")
             out.append(f"<pre class='code'><code>{escape(code_clean)}</code></pre>")
     return "".join(out)
 
 
-def _render_paragraphs(text: str) -> str:
-    # Preserve blank lines as paragraph breaks
+def render_paragraphs(text: str) -> str:
     lines = text.splitlines()
     paras: List[List[str]] = [[]]
     for line in lines:
@@ -217,8 +171,7 @@ def _render_paragraphs(text: str) -> str:
     return "".join(html_paras)
 
 
-def _default_css() -> str:
-    # Dark, clean, exam-like. Works well in both WebEngine and QTextBrowser.
+def default_css() -> str:
     return r"""
 :root {
   --bg: #ffffff;
