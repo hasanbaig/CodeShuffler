@@ -2,12 +2,9 @@ import sys
 
 from PyQt5.QtWidgets import QAction, QMessageBox
 
-from codeshuffler.gui.utils.styles import MENU_BAR_STYLE
-
 
 def build_menu(main_window):
     menu_bar = main_window.menuBar()
-    menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
     if sys.platform == "darwin":
         file_menu = menu_bar.addMenu("CodeShuffler")

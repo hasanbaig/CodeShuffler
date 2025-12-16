@@ -5,6 +5,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QBrush, QColor, QIcon
 from PyQt5.QtWidgets import (
     QFileDialog,
+    QFrame,
     QHBoxLayout,
     QMessageBox,
     QPlainTextEdit,
@@ -22,9 +23,9 @@ from codeshuffler.gui.components.syntax import GenericHighlighter
 from codeshuffler.gui.utils.dragdrop import FileDropHandler
 from codeshuffler.gui.utils.styles import (
     ANSWER_LIST_STYLE,
-    DARK_TEXTEDIT_ACTIVE,
-    DARK_TEXTEDIT_BASE,
-    DARK_TEXTEDIT_HIGHLIGHT,
+    LIGHT_DROP_AREA,
+    LIGHT_DROP_AREA_ACTIVE,
+    LIGHT_DROP_AREA_HIGHLIGHT,
     LIGHT_TEXTEDIT,
 )
 from codeshuffler.lib.generator import (
@@ -61,15 +62,16 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         right_layout = QVBoxLayout()
         self.code_drop_area = QPlainTextEdit()
         self.code_drop_area.setReadOnly(True)
-        self.code_drop_area.setPlaceholderText("Drop a code file here or click below to browse...")
+        self.code_drop_area.setPlaceholderText("Drop a code file here")
         self.code_drop_area.setAcceptDrops(False)
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_BASE)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA)
+        self.code_drop_area.setFrameStyle(QFrame.NoFrame)
 
         self.shuffle_btn = QPushButton("  Shuffle")
         self.shuffle_btn.setIcon(QIcon(os.path.join(ICON_PATH, "gears.png")))
         self.shuffle_btn.setIconSize(QSize(16, 16))
 
-        left_layout.addWidget(Section("Original Code", self.code_drop_area, dark_body=True))
+        left_layout.addWidget(Section("Original Code", self.code_drop_area, dark_body=False))
         left_layout.addWidget(self.shuffle_btn)
         self.code_preview = QTextEdit()
         self.code_preview.setReadOnly(True)
@@ -105,10 +107,10 @@ class CodeShufflerTab(QWidget, FileDropHandler):
             self.load_file(file_path)
 
     def on_drag_enter(self):
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_HIGHLIGHT)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA_HIGHLIGHT)
 
     def on_drag_leave(self):
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_BASE)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA)
 
     def load_file(self, file_path):
         filename = os.path.basename(file_path)
@@ -140,7 +142,7 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         lang = language_from_extension(ext)
 
         self.highlighter = GenericHighlighter(self.code_drop_area.document(), language=lang)
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_ACTIVE)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA_ACTIVE)
 
         if self.current_file.warning_msg:
             QMessageBox.warning(self, "Duplicate Keys Detected", self.current_file.warning_msg)
@@ -219,7 +221,7 @@ class CodeShufflerTab(QWidget, FileDropHandler):
                 font.setBold(True)
                 top_item.setFont(0, font)
                 top_item.setFont(1, font)
-                green = QBrush(QColor("#2e7d32"))  # classic Windows-style green
+                green = QBrush(QColor("#2e7d32"))
                 top_item.setForeground(0, green)
                 top_item.setForeground(1, green)
 
