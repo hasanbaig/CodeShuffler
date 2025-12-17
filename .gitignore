@@ -4,3 +4,7 @@ lib/__pycache__/*
 codeshuffer/images/
 pyproject.toml
 .pre-commit-config.yaml
+build/
+dist/
+build-env/
+.venv/

@@ -26,29 +26,15 @@ class HtmlPreviewWidget(QWidget):
         container_layout = QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
         container_layout.setSpacing(0)
+        text = QTextBrowser(container)
+        text.setOpenExternalLinks(True)
+        text.setSizePolicy(
+            QSizePolicy.Expanding,
+            QSizePolicy.Expanding,
+        )
 
-        try:
-            from PyQt5.QtWebEngineWidgets import QWebEngineView
-
-            web = QWebEngineView(container)
-            web.setSizePolicy(
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding,
-            )
-
-            self._web = web
-            container_layout.addWidget(web)
-
-        except Exception:
-            text = QTextBrowser(container)
-            text.setOpenExternalLinks(True)
-            text.setSizePolicy(
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding,
-            )
-
-            self._text = text
-            container_layout.addWidget(text)
+        self._text = text
+        container_layout.addWidget(text)
 
         root_layout.addWidget(container)
         self.setLayout(root_layout)
