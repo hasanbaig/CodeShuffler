@@ -28,13 +28,16 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
+      - name: Install project
+        run: pip install -e .
+
       - name: Verify tag matches app version
         shell: python
         run: |
           import os, re
           tag = os.environ["GITHUB_REF_NAME"]
           tag_ver = tag[1:]
-          from codeshuffler.version import __version__
+          from version import __version__
           assert __version__ == tag_ver, f"version.py={__version__} but tag={tag_ver}"
 
       - name: Build (PyInstaller)
