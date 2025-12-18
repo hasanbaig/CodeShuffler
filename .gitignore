@@ -9,3 +9,4 @@ build/
 dist/
 build-env/
 .venv/
+codeshuffler/backlog.md
