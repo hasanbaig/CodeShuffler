@@ -36,6 +36,6 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-
 3. You can optionally specify to keep **X** number of lines same in the generated multiple choice questions by setting the value of switch `first_same_X_lines_MCQ` in `lib\settings.py` file. 
 
 4. You can specify how many multiple choice options you want to generate by setting the value of a switch `no_of_choices` in `lib\settings.py` file. 
-# CodeShuffler-v2
+
 
 
