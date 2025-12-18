@@ -1,3 +1,9 @@
+
+<img width="1347" height="268" alt="codeshuffler-name" src="https://github.com/user-attachments/assets/72b7871f-83ef-4783-9f5a-9ed64b44f666" />
+<br />
+<br />
+
+
 CodeShuffler empowers instructors to rearrange lines within coding files, regardless of the programming language used, producing an output image that presents the shuffled lines of code. Additionally, it generates multiple-choice options, with one of them signifying the correct sequence of coding lines. This tool simplifies the process of conducting paper-based coding assessments, eliminating the need for manual grading and streamlining the evaluation process for educators.
 
 CodeShuffler, along with all associated coding files, and the assessment template, are copyrighted by Hasan Baig and are made publicly available under the following license terms: 
@@ -21,4 +27,4 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-
 
 4. You can specify how many multiple choice options you want to generate by setting the value of a switch `no_of_choices` in `lib\settings.py` file. 
 # CodeShuffler-v2
-# CodeShuffler-v2
+
