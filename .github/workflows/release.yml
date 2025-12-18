@@ -37,7 +37,7 @@ jobs:
           import os, re
           tag = os.environ["GITHUB_REF_NAME"]
           tag_ver = tag[1:]
-          from version import __version__
+          from codeshuffler.version import __version__
           assert __version__ == tag_ver, f"version.py={__version__} but tag={tag_ver}"
 
       - name: Build (PyInstaller)
