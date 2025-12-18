@@ -98,5 +98,6 @@ When finished, you will have the option to view your shuffled exam with an answe
 users will also have the ability to change their header & footer templates through the Settings menu. As of right now, the default template is the standard
 University of Connecticut exam template.
 
-"CodeShuffler © 2023 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
+"CodeShuffler ©2026 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
