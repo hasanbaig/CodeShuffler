@@ -33,8 +33,9 @@ from codeshuffler.lib.generator import (
     gen_random_choices_wICinst,
     generate_partials,
     incorrect_instructions,
+    shuffle_sol,
 )
-from codeshuffler.lib.utils import download_image, shuffle_sol
+from codeshuffler.lib.utils import download_image, resource_path
 from codeshuffler.models.codefile import CodeFile
 from codeshuffler.models.languages import language_from_extension
 from codeshuffler.settings import settings
@@ -68,7 +69,7 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         self.code_drop_area.setFrameStyle(QFrame.NoFrame)
 
         self.shuffle_btn = QPushButton("  Shuffle")
-        self.shuffle_btn.setIcon(QIcon(os.path.join(ICON_PATH, "gears.png")))
+        self.shuffle_btn.setIcon(QIcon(resource_path(os.path.join(ICON_PATH, "gears.png"))))
         self.shuffle_btn.setIconSize(QSize(16, 16))
 
         left_layout.addWidget(Section("Original Code", self.code_drop_area, dark_body=False))
@@ -87,7 +88,7 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         self.answer_choices.setStyleSheet(ANSWER_LIST_STYLE)
 
         self.download_btn = QPushButton("  Download PNG")
-        self.download_btn.setIcon(QIcon(os.path.join(ICON_PATH, "download.png")))
+        self.download_btn.setIcon(QIcon(resource_path(os.path.join(ICON_PATH, "download.png"))))
         self.download_btn.setIconSize(QSize(16, 16))
 
         right_layout.addWidget(Section("Shuffled Code", self.code_preview))

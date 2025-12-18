@@ -5,7 +5,6 @@ class HtmlPreviewWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # Constrain this widget itself
         self.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Expanding,
@@ -18,7 +17,6 @@ class HtmlPreviewWidget(QWidget):
         root_layout.setContentsMargins(0, 0, 0, 0)
         root_layout.setSpacing(0)
 
-        # Neutral container (protects layouts from WebEngine)
         container = QWidget(self)
         container.setSizePolicy(
             QSizePolicy.Expanding,
@@ -28,38 +26,18 @@ class HtmlPreviewWidget(QWidget):
         container_layout = QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
         container_layout.setSpacing(0)
+        text = QTextBrowser(container)
+        text.setOpenExternalLinks(True)
+        text.setSizePolicy(
+            QSizePolicy.Expanding,
+            QSizePolicy.Expanding,
+        )
 
-        try:
-            from PyQt5.QtWebEngineWidgets import QWebEngineView  # type: ignore
-
-            web = QWebEngineView(container)
-
-            # ONLY touch it after successful creation
-            web.setSizePolicy(
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding,
-            )
-
-            self._web = web
-            container_layout.addWidget(web)
-
-        except Exception:
-            text = QTextBrowser(container)
-            text.setOpenExternalLinks(True)
-            text.setSizePolicy(
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding,
-            )
-
-            self._text = text
-            container_layout.addWidget(text)
+        self._text = text
+        container_layout.addWidget(text)
 
         root_layout.addWidget(container)
         self.setLayout(root_layout)
-
-    # -------------------------
-    # Public API
-    # -------------------------
 
     def set_message(self, msg: str):
         html = f"""

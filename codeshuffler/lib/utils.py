@@ -1,22 +1,7 @@
-import random
+import os
+import sys
 
 from PIL import Image, ImageDraw, ImageFont
-
-
-def shuffle_sol(correct_sol):
-    random_code = random.sample(correct_sol, k=len(correct_sol))
-    # removing the indents for programming blocks
-    for el in range(len(random_code)):
-        random_code[el] = (
-            f"({el+1}) " + random_code[el]
-        )  # .strip()        #Remove strip() function to include tabs
-    return random_code
-
-
-def sequence_similarity(seq1, seq2):
-    set1 = set(seq1)
-    set2 = set(seq2)
-    return len(set1.intersection(set2))
 
 
 def print_code(in_code, message="##### Code #####"):
@@ -42,6 +27,12 @@ def convert_to_image(shuffled_sol, file_name):
     draw.multiline_text((pad_x, pad_y), code_text, font=fnt, fill=(0, 0, 0), spacing=4)
     file_path = f"codeshuffler/gui/outputs/{file_name}.png"
     img.save(file_path)
+
+
+def resource_path(relative_path: str) -> str:
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 
 def download_image(shuffled_sol, file_path):
