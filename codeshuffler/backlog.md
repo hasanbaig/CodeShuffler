@@ -20,5 +20,5 @@
 
     - Abstract more functionality away from the GUI
     
-    - Menu Bar Branding & Packaging
-    - Application Packaging, Executable Wrapping
+    - ~~Menu Bar Branding & Packaging~~
+    - ~~Application Packaging, Executable Wrapping~~
