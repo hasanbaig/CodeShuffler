@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Install project
+        run: pip install -e .
+
+      - name: Verify tag matches app version
+        shell: python
+        run: |
+          import os, re
+          tag = os.environ["GITHUB_REF_NAME"]
+          tag_ver = tag[1:]
+          from codeshuffler.version import __version__
+          assert __version__ == tag_ver, f"version.py={__version__} but tag={tag_ver}"
+
+      - name: Build (PyInstaller)
+        run: |
+          pyinstaller packaging/windows.spec
+        shell: bash
+        if: runner.os == 'Windows'
+
+      # - name: Build (PyInstaller)
+      #   run: |
+      #     pyinstaller packaging/macos.spec
+      #   shell: bash
+      #   if: runner.os == 'macOS'
+
+      - name: Package artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist\CodeShuffler\* -DestinationPath CodeShuffler-windows.zip
+
+      # - name: Package artifact (macOS)
+      #   if: runner.os == 'macOS'
+      #   shell: bash
+      #   run: |
+      #     ditto -c -k --sequesterRsrc --keepParent "dist/CodeShuffler.app" "CodeShuffler-macos.zip"
+
+      - name: Upload artifacts to workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-artifact
+          path: |
+            CodeShuffler-windows.zip
+            CodeShuffler-macos.zip
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release + upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/**/CodeShuffler-windows.zip
+            artifacts/**/CodeShuffler-macos.zip
