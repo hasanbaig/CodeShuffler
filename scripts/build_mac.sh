@@ -11,5 +11,3 @@ pip install -r requirements.txt
 pip install pyinstaller
 
 pyinstaller packaging/codeshuffler.spec
-
-echo "Build complete."

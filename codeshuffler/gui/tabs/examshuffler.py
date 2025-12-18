@@ -25,6 +25,7 @@ from codeshuffler.gui.utils.dragdrop import FileDropHandler
 from codeshuffler.gui.utils.styles import LIGHT_DROP_AREA, LIGHT_DROP_AREA_HIGHLIGHT, LIGHT_TEXTEDIT
 from codeshuffler.lib.parser import create_exam_docx, parse_exam, shuffle_answers, shuffle_questions
 from codeshuffler.lib.preview import PreviewError, render_exam_html
+from codeshuffler.lib.utils import resource_path
 
 ICON_PATH = os.path.join("codeshuffler", "gui", "icons")
 
@@ -72,7 +73,9 @@ class ExamShufflerTab(QWidget, FileDropHandler):
         shuffle_layout.setSpacing(6)
 
         shuffle_icon = QLabel()
-        shuffle_icon.setPixmap(QIcon(os.path.join(ICON_PATH, "gears.png")).pixmap(16, 16))
+        shuffle_icon.setPixmap(
+            QIcon(resource_path(os.path.join(ICON_PATH, "gears.png"))).pixmap(16, 16)
+        )
         shuffle_text = QLabel("Shuffle")
 
         shuffle_layout.addStretch()
@@ -114,7 +117,9 @@ class ExamShufflerTab(QWidget, FileDropHandler):
         download_layout.setSpacing(6)
 
         download_icon = QLabel()
-        download_icon.setPixmap(QIcon(os.path.join(ICON_PATH, "download.png")).pixmap(16, 16))
+        download_icon.setPixmap(
+            QIcon(resource_path(os.path.join(ICON_PATH, "download.png"))).pixmap(16, 16)
+        )
         download_text = QLabel("Download Exam")
 
         download_layout.addStretch()
