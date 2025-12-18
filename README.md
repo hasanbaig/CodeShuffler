@@ -2,7 +2,7 @@ CodeShuffler empowers instructors to rearrange lines within coding files, regard
 
 CodeShuffler, along with all associated coding files, and the assessment template, are copyrighted by Hasan Baig and are made publicly available under the following license terms: 
 
-"CodeShuffler © 2023 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
+"CodeShuffler © 2026 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
  
 
@@ -21,3 +21,4 @@ For example, to shuffle the code, for example `samplecode.py`, first place it in
 2. You can optionally specify to keep **X** number of lines same in the generated multiple choice questions by setting the value of switch `first_same_X_lines_MCQ` in `lib\settings.py` file. 
 
 3. You can specify how many multiple choice options you want to generate by setting the value of a switch `no_of_choices` in `lib\settings.py` file. 
+
