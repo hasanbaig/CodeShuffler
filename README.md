@@ -3,9 +3,10 @@
 <br />
 <br />
 
+[![Main Release](https://github.com/ShawnSpitzel/CodeShuffler-v2/actions/workflows/release.yml/badge.svg)](https://github.com/ShawnSpitzel/CodeShuffler-v2/actions/workflows/release.yml)
 [![Main Release](https://github.com/ShawnSpitzel/CodeShuffler-v2/actions/workflows/ci.yml/badge.svg)](https://github.com/ShawnSpitzel/CodeShuffler-v2/actions/workflows/ci.yml)
 [![Windows ](https://img.shields.io/badge/Download-Windows-blue?logo=windows)](
-https://github.com/<org>/<repo>/releases/latest
+https://github.com/ShawnSpitzel/CodeShuffler-v2/releases/tag/v1.0.0
 )
 [![macOS](https://img.shields.io/badge/Download-macOS-black?logo=apple)](
 https://github.com/<org>/<repo>/releases/latest
