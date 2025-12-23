@@ -35,7 +35,6 @@ jobs:
         run: |
           from codeshuffler.version import __version__
           assert __version__ == "${{ inputs.tag }}".lstrip("v")
-
       - name: Build macOS
         run: pyinstaller packaging/macos.spec
 
