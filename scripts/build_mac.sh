@@ -10,4 +10,4 @@ pip install --upgrade pip
 pip install -r requirements.txt
 pip install pyinstaller
 
-pyinstaller packaging/codeshuffler.spec
+pyinstaller packaging/mac.spec

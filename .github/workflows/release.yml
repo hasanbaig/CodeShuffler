@@ -46,11 +46,11 @@ jobs:
         shell: bash
         if: runner.os == 'Windows'
 
-      # - name: Build (PyInstaller)
-      #   run: |
-      #     pyinstaller packaging/macos.spec
-      #   shell: bash
-      #   if: runner.os == 'macOS'
+      - name: Build (PyInstaller)
+        run: |
+          pyinstaller packaging/mac.spec
+        shell: bash
+        if: runner.os == 'macOS'
 
       - name: Package artifact (Windows)
         if: runner.os == 'Windows'
@@ -58,11 +58,11 @@ jobs:
         run: |
           Compress-Archive -Path dist\CodeShuffler\* -DestinationPath CodeShuffler-windows.zip
 
-      # - name: Package artifact (macOS)
-      #   if: runner.os == 'macOS'
-      #   shell: bash
-      #   run: |
-      #     ditto -c -k --sequesterRsrc --keepParent "dist/CodeShuffler.app" "CodeShuffler-macos.zip"
+      - name: Package artifact (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent "dist/CodeShuffler.app" "CodeShuffler-macos.zip"
 
       - name: Upload artifacts to workflow
         uses: actions/upload-artifact@v4
