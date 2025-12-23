@@ -42,7 +42,7 @@ def _add_code_block(doc, code_text: str):
     for idx, line in enumerate(lines):
         stripped = line.lstrip(" ")
         leading_spaces = len(line) - len(stripped)
-        visible_line = ("\u00A0" * leading_spaces) + stripped
+        visible_line = ("\u00a0" * leading_spaces) + stripped
 
         run = para.add_run(visible_line)
         run.font.name = "Courier New"

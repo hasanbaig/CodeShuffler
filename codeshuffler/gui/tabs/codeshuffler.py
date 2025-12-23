@@ -1,42 +1,47 @@
 import os
 import random
 
-from PyQt5.QtGui import QColor
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QBrush, QColor, QIcon
 from PyQt5.QtWidgets import (
     QFileDialog,
+    QFrame,
     QHBoxLayout,
-    QLabel,
-    QListWidget,
-    QListWidgetItem,
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
     QTextEdit,
+    QTreeWidget,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
+from codeshuffler.gui.components.section import Section
+from codeshuffler.gui.components.settings import SettingsDialog
+from codeshuffler.gui.components.syntax import GenericHighlighter
 from codeshuffler.gui.utils.dragdrop import FileDropHandler
-from codeshuffler.gui.utils.settings import SettingsDialog
 from codeshuffler.gui.utils.styles import (
-    DARK_TEXTEDIT_ACTIVE,
-    DARK_TEXTEDIT_BASE,
-    DARK_TEXTEDIT_HIGHLIGHT,
-    TITLE,
+    ANSWER_LIST_STYLE,
+    LIGHT_DROP_AREA,
+    LIGHT_DROP_AREA_ACTIVE,
+    LIGHT_DROP_AREA_HIGHLIGHT,
+    LIGHT_TEXTEDIT,
 )
-from codeshuffler.gui.utils.syntax import GenericHighlighter
 from codeshuffler.lib.generator import (
     gen_correct_answer,
     gen_random_choices_wICinst,
     generate_partials,
     incorrect_instructions,
+    shuffle_sol,
 )
-from codeshuffler.lib.utils import download_image, shuffle_sol
+from codeshuffler.lib.utils import download_image, resource_path
 from codeshuffler.models.codefile import CodeFile
 from codeshuffler.models.languages import language_from_extension
 from codeshuffler.settings import settings
 
 BASE_PATH = os.path.join(os.getcwd(), "codeshuffler", "gui", "cache")
+ICON_PATH = os.path.join("codeshuffler", "gui", "icons")
 os.makedirs(BASE_PATH, exist_ok=True)
 
 
@@ -53,44 +58,41 @@ class CodeShufflerTab(QWidget, FileDropHandler):
 
     def init_ui(self):
         layout = QVBoxLayout(self)
-        top_bar = QHBoxLayout()
-        title_label = QLabel("CodeShuffler")
-        title_label.setStyleSheet(TITLE)
-        top_bar.addWidget(title_label)
-        top_bar.addStretch()
-        layout.addLayout(top_bar)
         content_layout = QHBoxLayout()
         left_layout = QVBoxLayout()
         right_layout = QVBoxLayout()
         self.code_drop_area = QPlainTextEdit()
         self.code_drop_area.setReadOnly(True)
-        self.code_drop_area.setPlaceholderText("Drop a code file here or click below to browse...")
+        self.code_drop_area.setPlaceholderText("Drop a code file here")
         self.code_drop_area.setAcceptDrops(False)
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_BASE)
-        self.drop_label = QLabel(
-            "Drop code file here or click to browse\n(JS, TS, Python, Java, C++, etc.)"
-        )
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA)
+        self.code_drop_area.setFrameStyle(QFrame.NoFrame)
 
-        self.shuffle_btn = QPushButton("Shuffle")
-        self.settings_btn = QPushButton("Settings")
+        self.shuffle_btn = QPushButton("  Shuffle")
+        self.shuffle_btn.setIcon(QIcon(resource_path(os.path.join(ICON_PATH, "gears.png"))))
+        self.shuffle_btn.setIconSize(QSize(16, 16))
 
-        left_layout.addWidget(QLabel("Original Code Preview"))
-        left_layout.addWidget(self.code_drop_area)
+        left_layout.addWidget(Section("Original Code", self.code_drop_area, dark_body=False))
         left_layout.addWidget(self.shuffle_btn)
-        left_layout.addWidget(self.settings_btn)
         self.code_preview = QTextEdit()
         self.code_preview.setReadOnly(True)
-        self.code_preview.setPlaceholderText("Shuffled code will appear here...")
+        self.code_preview.setStyleSheet(LIGHT_TEXTEDIT)
 
-        self.answer_choices = QListWidget()
-        self.answer_choices.addItem("Multiple choice options will appear here...")
+        self.answer_choices = QTreeWidget()
+        self.answer_choices.setColumnCount(2)
+        self.answer_choices.setHeaderLabels(["Sequence", "Score"])
+        self.answer_choices.setRootIsDecorated(True)
+        self.answer_choices.setIndentation(12)
 
-        self.download_btn = QPushButton("Download PNG")
+        self.init_answer_placeholders()
+        self.answer_choices.setStyleSheet(ANSWER_LIST_STYLE)
 
-        right_layout.addWidget(QLabel("Shuffled Code"))
-        right_layout.addWidget(self.code_preview)
-        right_layout.addWidget(QLabel("Answer Choices"))
-        right_layout.addWidget(self.answer_choices)
+        self.download_btn = QPushButton("  Download PNG")
+        self.download_btn.setIcon(QIcon(resource_path(os.path.join(ICON_PATH, "download.png"))))
+        self.download_btn.setIconSize(QSize(16, 16))
+
+        right_layout.addWidget(Section("Shuffled Code", self.code_preview))
+        right_layout.addWidget(Section("Answer Choices", self.answer_choices))
         right_layout.addWidget(self.download_btn)
         content_layout.addLayout(left_layout, 1)
         content_layout.addLayout(right_layout, 1)
@@ -99,7 +101,6 @@ class CodeShufflerTab(QWidget, FileDropHandler):
 
     def init_events(self):
         self.shuffle_btn.clicked.connect(self.shuffle_code)
-        self.settings_btn.clicked.connect(self.open_settings)
         self.download_btn.clicked.connect(self.download_png)
 
     def handle_file_drop(self, file_path: str):
@@ -107,20 +108,24 @@ class CodeShufflerTab(QWidget, FileDropHandler):
             self.load_file(file_path)
 
     def on_drag_enter(self):
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_HIGHLIGHT)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA_HIGHLIGHT)
 
     def on_drag_leave(self):
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_BASE)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA)
 
     def load_file(self, file_path):
         filename = os.path.basename(file_path)
         self.filename = filename
         cache_path = os.path.join(BASE_PATH, "inputs")
         save_path = os.path.join(cache_path, filename)
-
-        with open(file_path, "rb") as src, open(save_path, "wb") as dst:
-            dst.write(src.read())
-
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        try:
+            with open(file_path, "rb") as src, open(save_path, "wb") as dst:
+                dst.write(src.read())
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f": {e}")
+            self.current_file = None
+            return
         self.current_file = CodeFile(save_path)
 
         try:
@@ -138,10 +143,24 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         lang = language_from_extension(ext)
 
         self.highlighter = GenericHighlighter(self.code_drop_area.document(), language=lang)
-        self.code_drop_area.setStyleSheet(DARK_TEXTEDIT_ACTIVE)
+        self.code_drop_area.setStyleSheet(LIGHT_DROP_AREA_ACTIVE)
 
         if self.current_file.warning_msg:
             QMessageBox.warning(self, "Duplicate Keys Detected", self.current_file.warning_msg)
+
+    def init_answer_placeholders(self):
+        self.answer_choices.clear()
+
+        letters = ["a", "b", "c", "d", "e", "f", "g"]
+
+        for letter in letters[: settings.no_of_choices]:
+            top_item = QTreeWidgetItem([f"{letter})", "0.0"])
+
+            detail_item = QTreeWidgetItem(["", ""])
+            top_item.addChild(detail_item)
+
+            self.answer_choices.addTopLevelItem(top_item)
+        self.answer_choices.resizeColumnToContents(0)
 
     def shuffle_code(self):
         if not self.current_file:
@@ -183,23 +202,46 @@ class CodeShufflerTab(QWidget, FileDropHandler):
         scored = []
         for ch in choices:
             if ch == correct_answer:
-                color = QColor("#4CAF50")
                 score = 1.0
             elif ch in partials:
-                color = QColor("#FFA500")
                 idx = partials.index(ch)
                 score = max(0, 1 - 0.25 * (idx + 1))
             else:
-                color = QColor("#000000")
                 score = 0.0
-            scored.append((ch, color, score))
+            scored.append((ch, score))
 
-        scored.sort(key=lambda x: x[2], reverse=True)
+        scored.sort(key=lambda x: x[1], reverse=True)
 
-        for i, (choice, color, score) in enumerate(scored):
-            item = QListWidgetItem(f"{letters[i]}) {choice}  |  Score: {score:.2f}")
-            item.setForeground(color)
-            self.answer_choices.addItem(item)
+        for i, (choice, score) in enumerate(scored):
+            sequence_text = f"{letters[i]}) {choice}"
+            score_text = f"{score:.2f}"
+
+            top_item = QTreeWidgetItem([sequence_text, score_text])
+            if score == 1.0:
+                font = top_item.font(0)
+                font.setBold(True)
+                top_item.setFont(0, font)
+                top_item.setFont(1, font)
+                green = QBrush(QColor("#2e7d32"))
+                top_item.setForeground(0, green)
+                top_item.setForeground(1, green)
+
+                top_item.setExpanded(True)
+
+            if score == 1.0:
+                detail_text = "✔ Correct solution"
+            elif score > 0.0:
+                detail_text = "⚠ Partial credit"
+            else:
+                detail_text = "✖ Wrong answer"
+
+            detail_item = QTreeWidgetItem([detail_text, ""])
+            top_item.addChild(detail_item)
+
+            self.answer_choices.addTopLevelItem(top_item)
+
+        self.answer_choices.resizeColumnToContents(0)
+        self.answer_choices.resizeColumnToContents(1)
 
     def download_png(self):
         if not self.code_preview.toPlainText():

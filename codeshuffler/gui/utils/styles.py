@@ -1,9 +1,8 @@
 TITLE = """
 QLabel {
     color: #000000;
-    font-size: 18px;
     font-weight: bold;
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
     padding: 5px 10px;
 }
 """
@@ -11,7 +10,6 @@ MENU_BAR_STYLE = """
         QMenuBar {
             background-color: #252526;
             color: white;
-            font-size: 13px;
             padding: 4px;
         }
         QMenuBar::item:selected {
@@ -28,47 +26,103 @@ MENU_BAR_STYLE = """
     """
 DARK_TEXTEDIT_BASE = """
 QPlainTextEdit, QTextEdit {
-    border: 2px solid #aaa;
-    border-radius: 8px;
+    border: none;
     background-color: #1e1e1e;
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
-    font-size: 13px;
-    padding: 10px;
+    padding: 0px;
 }
 """
 
 DARK_TEXTEDIT_HIGHLIGHT = """
 QPlainTextEdit, QTextEdit {
-    border: 2px solid #00bfff;
-    border-radius: 8px;
     background-color: #1e1e1e;
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
-    font-size: 13px;
-    padding: 10px;
 }
 """
 
 DARK_TEXTEDIT_ACTIVE = """
 QPlainTextEdit, QTextEdit {
-    border: 2px solid #555;
-    border-radius: 8px;
     background-color: #1e1e1e;
     color: #dcdcdc;
     font-family: 'Source Code Pro', 'Consolas', monospace;
-    font-size: 13px;
-    padding: 10px;
 }
 """
+LIGHT_TEXTEDIT = """
+QTextEdit {
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Segoe UI', 'Tahoma', sans-serif;
+}
+"""
+ANSWER_LIST_STYLE = """
+        QTreeWidget {
+            border: none;
+            background-color: #ffffff;
+            font-family: 'Segoe UI', 'Tahoma', sans-serif;
+        }
+
+        QHeaderView::section {
+            border-bottom: 1px solid #bdbdbd;
+            font-weight: 600;
+        }
+        """
 
 DARK_DROP_AREA = """
 QPlainTextEdit {
-    border: 2px dashed #888;
-    border-radius: 8px;
     background-color: #1e1e1e;
     color: #dcdcdc;
     padding: 10px;
     font-family: 'Source Code Pro';
 }
 """
+LIGHT_DROP_AREA = """
+QPlainTextEdit {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px;
+    font-family: 'Source Code Pro', 'Consolas', monospace;
+}
+"""
+LIGHT_DROP_AREA_HIGHLIGHT = """
+QPlainTextEdit {
+    background-color: #f5faff;   /* subtle blue tint */
+    color: #000000;
+    padding: 10px;
+    font-family: 'Source Code Pro', 'Consolas', monospace;
+}
+"""
+LIGHT_DROP_AREA_ACTIVE = """
+QPlainTextEdit {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px;
+    font-family: 'Source Code Pro', 'Consolas', monospace;
+}
+"""
+
+
+TAB_STYLE = """
+            QTabBar::tab {
+            }
+            QTabBar::tab:selected {
+            }
+        """
+HEADER_STYLE = """
+            QLabel {
+                background-color: #f0f0f0;
+                color: #000000;
+                padding: 6px 10px;
+                font-weight: 600;
+                border: 1px solid #bdbdbd;
+                border-bottom: none;
+            }
+        """
+BODY_STYLE = """
+                QWidget#SectionBody {
+                    background-color: #ffffff;
+                    border: 1px solid #bdbdbd;
+                }
+            """

@@ -15,7 +15,11 @@
     - Save previous session when closing and re-opening
     - Save settings across sessions (opt for a config rather than settings.py)
 
+    - Write test-cases
+
     - UI Improvements
 
-    - Menu Bar Branding & Packaging
-    - Application Packaging, Executable Wrapping
+    - Abstract more functionality away from the GUI
+    
+    - ~~Menu Bar Branding & Packaging~~
+    - ~~Application Packaging, Executable Wrapping~~
