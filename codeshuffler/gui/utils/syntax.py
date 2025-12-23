@@ -4,8 +4,6 @@ from PyQt5.QtGui import QColor, QFont, QSyntaxHighlighter, QTextCharFormat
 
 
 class GenericHighlighter(QSyntaxHighlighter):
-    """Lightweight syntax highlighter that handles Python, C++, Java, and JS."""
-
     def __init__(self, document, language="python"):
         super().__init__(document)
         self.language = language.lower()
