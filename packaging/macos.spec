@@ -44,12 +44,13 @@ exe = EXE(
     ),
 )
 
-coll = COLLECT(
+app = BUNDLE(
     exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='CodeShuffler',
+    name='CodeShuffler.app',
+    icon=os.path.join(
+        repo_root,
+        'codeshuffler/gui/icons/codeshuffler-icon.icns',
+    ),
+    bundle_identifier="com.codeshuffler.app",
 )
+
