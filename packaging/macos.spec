@@ -46,6 +46,8 @@ exe = EXE(
 
 app = BUNDLE(
     exe,
+    a.binaries,
+    a.datas,
     name='CodeShuffler.app',
     icon=os.path.join(
         repo_root,
