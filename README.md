@@ -25,7 +25,7 @@ CodeShuffler, along with all associated coding files, and the assessment templat
 
 **Supported platforms**
 - Windows (released)
-- macOS (release, buggy)
+- macOS (released, buggy)
 - Linux (coming v1.1.0)
 
 ### Option 2: Clone Repo
@@ -100,5 +100,6 @@ University of Connecticut exam template.
 
 "CodeShuffler ©2026 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
 
 
