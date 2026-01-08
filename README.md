@@ -53,7 +53,7 @@ python main.py
 1. Correct code snippet
 2. Incorrect variants dictionary, explicitly marked
 
-The correct implementation must appear first, followed by a dictionary incorrect_lines in format {correct:incorrect}. 
+The correct implementation must appear first, followed by a dictionary titled "incorrect_lines" in the format {correct:incorrect}. 
 An example is provided below:
 
 ```python
@@ -69,7 +69,7 @@ incorrect_lines = {
     "return max_val": "return n"
 }
 ```
-Note that the incorrect lines delimiter and incorrect_lines variable name must be copied verbatim. More snippets are also available
+Note that the "Incorrect lines below" delimiter and incorrect_lines variable name must be copied verbatim. More snippets are also available
 at codeshuffler/codefiles/snippets.
 
 ### ExamShuffler Instructions
@@ -100,6 +100,7 @@ University of Connecticut exam template.
 
 "CodeShuffler ©2026 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
 
 
 
