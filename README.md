@@ -31,7 +31,7 @@ CodeShuffler, along with all associated coding files, and the assessment templat
 ### Option 2: Clone Repo
 
 ```bash
-git clone https://github.com/<your-username>/CodeShuffler.git
+git clone https://github.com/hasanbaig/CodeShuffler.git
 cd CodeShuffler
 python -m venv venv
 source venv/bin/activate  # If on Windows: venv\Scripts\activate
@@ -100,6 +100,7 @@ University of Connecticut exam template.
 
 "CodeShuffler ©2026 by Hasan Baig is licensed under Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)". 
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
 
 
 
